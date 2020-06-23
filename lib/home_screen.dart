@@ -17,15 +17,33 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentBarIndex = 0;
   final List<AppFlow> appFlows = [
     AppFlow(
-      title: 'Video',
+      title: 'Home',
       iconData: Icons.ondemand_video,
       mainColor: Colors.red,
       navigatorKey: GlobalKey<NavigatorState>(),
     ),
     AppFlow(
-      title: 'Music',
+      title: 'Arena',
       iconData: Icons.music_note,
       mainColor: Colors.green,
+      navigatorKey: GlobalKey<NavigatorState>(),
+    ),
+    AppFlow(
+      title: 'Profile',
+      iconData: Icons.satellite,
+      mainColor: Colors.yellow,
+      navigatorKey: GlobalKey<NavigatorState>(),
+    ),
+    AppFlow(
+      title: 'Store',
+      iconData: Icons.fastfood,
+      mainColor: Colors.blue,
+      navigatorKey: GlobalKey<NavigatorState>(),
+    ),
+    AppFlow(
+      title: 'Play',
+      iconData: Icons.games,
+      mainColor: Colors.purple,
       navigatorKey: GlobalKey<NavigatorState>(),
     )
   ];
@@ -39,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // That occurs when the inner has more than one page on its stack.
     // You can comment the onWillPop callback and watch "the bug".
     return WillPopScope(
+      // Todo understand boolean
       onWillPop: () async =>
           !await currentFlow.navigatorKey.currentState.maybePop(),
       child: Scaffold(
@@ -51,13 +70,14 @@ class _HomeScreenState extends State<HomeScreen> {
               .toList(),
         ),
         bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
           currentIndex: _currentBarIndex,
           items: appFlows
               .map(
-                (flow) => BottomNavigationBarItem(
-                  title: Text(flow.title),
-                  icon: Icon(flow.iconData),
-                ),
+                (menus) => BottomNavigationBarItem(
+                    title: Text(menus.title),
+                    icon: Icon(menus.iconData),
+                    activeIcon: Icon(menus.iconData)),
               )
               .toList(),
           onTap: (newIndex) => setState(
