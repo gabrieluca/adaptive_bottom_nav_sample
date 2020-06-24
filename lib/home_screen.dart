@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentTabIndex = 0;
-  final List<MainTabs> mainTabs = [
+  final List<MainTabs> allMainTabs = [
     MainTabs(
       title: 'Xports',
       tabIcon: Icons.ondemand_video,
@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final currentTab = mainTabs[_currentTabIndex];
+    final currentTab = allMainTabs[_currentTabIndex];
 
     // We're preventing the root navigator from popping and closing the app
     // when the back button is pressed and the inner navigator can handle it.
@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: IndexedStack(
           // a page for every tab
           index: _currentTabIndex,
-          children: mainTabs
+          children: allMainTabs
               .map(
                 _buildIndexedPageTab,
               )
@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           currentIndex: _currentTabIndex,
-          items: mainTabs
+          items: allMainTabs
               .map(
                 (menus) => BottomNavigationBarItem(
                     title: Container(),
