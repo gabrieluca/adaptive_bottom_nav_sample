@@ -18,31 +18,36 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<AppFlow> appFlows = [
     AppFlow(
       title: 'Home',
-      iconData: Icons.ondemand_video,
+      menuIcon: Icons.ondemand_video,
+      selectedMenuIcon: Icons.home,
       mainColor: Colors.red,
       navigatorKey: GlobalKey<NavigatorState>(),
     ),
     AppFlow(
       title: 'Arena',
-      iconData: Icons.music_note,
+      menuIcon: Icons.music_note,
+      selectedMenuIcon: Icons.business,
       mainColor: Colors.green,
       navigatorKey: GlobalKey<NavigatorState>(),
     ),
     AppFlow(
       title: 'Profile',
-      iconData: Icons.satellite,
+      menuIcon: Icons.satellite,
+      selectedMenuIcon: Icons.person,
       mainColor: Colors.yellow,
       navigatorKey: GlobalKey<NavigatorState>(),
     ),
     AppFlow(
       title: 'Store',
-      iconData: Icons.fastfood,
+      menuIcon: Icons.fastfood,
+      selectedMenuIcon: Icons.store,
       mainColor: Colors.blue,
       navigatorKey: GlobalKey<NavigatorState>(),
     ),
     AppFlow(
       title: 'Play',
-      iconData: Icons.games,
+      menuIcon: Icons.games,
+      selectedMenuIcon: Icons.play_circle_filled,
       mainColor: Colors.purple,
       navigatorKey: GlobalKey<NavigatorState>(),
     )
@@ -76,8 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
               .map(
                 (menus) => BottomNavigationBarItem(
                     title: Text(menus.title),
-                    icon: Icon(menus.iconData),
-                    activeIcon: Icon(menus.iconData)),
+                    icon: Icon(menus.menuIcon),
+                    activeIcon: Icon(menus.selectedMenuIcon)),
               )
               .toList(),
           onTap: (newIndex) => setState(
