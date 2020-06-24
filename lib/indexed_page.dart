@@ -26,7 +26,7 @@ class IndexedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var pageTitle = 'Page $index';
     if (containingFlowTitle != null) {
-      pageTitle += ' of $containingFlowTitle Flow';
+      pageTitle += ' of $containingFlowTitle';
     }
     return Scaffold(
       backgroundColor: backgroundColor,

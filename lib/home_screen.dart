@@ -1,5 +1,6 @@
-import 'package:adaptive_bottom_nav_sample/app_flow.dart';
+import 'package:adaptive_bottom_nav_sample/main_tabs.dart';
 import 'package:adaptive_bottom_nav_sample/indexed_page.dart';
+import 'package:adaptive_bottom_nav_sample/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -14,48 +15,48 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentBarIndex = 0;
-  final List<AppFlow> appFlows = [
-    AppFlow(
-      title: 'Home',
-      menuIcon: Icons.ondemand_video,
-      selectedMenuIcon: Icons.home,
+  int _currentTabIndex = 0;
+  final List<MainTabs> mainTabs = [
+    MainTabs(
+      title: 'Xports',
+      tabIcon: Icons.ondemand_video,
+      selectedTabIcon: Icons.home,
       mainColor: Colors.red,
       navigatorKey: GlobalKey<NavigatorState>(),
     ),
-    AppFlow(
+    MainTabs(
+      title: 'Play',
+      tabIcon: Icons.games,
+      selectedTabIcon: Icons.play_circle_filled,
+      mainColor: Colors.purple,
+      navigatorKey: GlobalKey<NavigatorState>(),
+    ),
+    MainTabs(
       title: 'Arena',
-      menuIcon: Icons.music_note,
-      selectedMenuIcon: Icons.business,
+      tabIcon: Icons.music_note,
+      selectedTabIcon: Icons.business,
       mainColor: Colors.green,
       navigatorKey: GlobalKey<NavigatorState>(),
     ),
-    AppFlow(
+    MainTabs(
       title: 'Profile',
-      menuIcon: Icons.satellite,
-      selectedMenuIcon: Icons.person,
+      tabIcon: Icons.satellite,
+      selectedTabIcon: Icons.person,
       mainColor: Colors.yellow,
       navigatorKey: GlobalKey<NavigatorState>(),
     ),
-    AppFlow(
+    MainTabs(
       title: 'Store',
-      menuIcon: Icons.fastfood,
-      selectedMenuIcon: Icons.store,
+      tabIcon: Icons.fastfood,
+      selectedTabIcon: Icons.store,
       mainColor: Colors.blue,
       navigatorKey: GlobalKey<NavigatorState>(),
     ),
-    AppFlow(
-      title: 'Play',
-      menuIcon: Icons.games,
-      selectedMenuIcon: Icons.play_circle_filled,
-      mainColor: Colors.purple,
-      navigatorKey: GlobalKey<NavigatorState>(),
-    )
   ];
 
   @override
   Widget build(BuildContext context) {
-    final currentFlow = appFlows[_currentBarIndex];
+    final currentTab = mainTabs[_currentTabIndex];
 
     // We're preventing the root navigator from popping and closing the app
     // when the back button is pressed and the inner navigator can handle it.
@@ -64,35 +65,35 @@ class _HomeScreenState extends State<HomeScreen> {
     return WillPopScope(
       // Todo understand boolean
       onWillPop: () async =>
-          !await currentFlow.navigatorKey.currentState.maybePop(),
+          !await currentTab.navigatorKey.currentState.maybePop(),
       child: Scaffold(
         body: IndexedStack(
-          index: _currentBarIndex,
-          children: appFlows
+          index: _currentTabIndex,
+          children: mainTabs
               .map(
-                _buildIndexedPageFlow,
+                _buildIndexedPageTab,
               )
               .toList(),
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          currentIndex: _currentBarIndex,
-          items: appFlows
+          currentIndex: _currentTabIndex,
+          items: mainTabs
               .map(
                 (menus) => BottomNavigationBarItem(
-                    title: Text(menus.title),
-                    icon: Icon(menus.menuIcon),
-                    activeIcon: Icon(menus.selectedMenuIcon)),
+                    title: Container(),
+                    icon: Icon(menus.tabIcon),
+                    activeIcon: Icon(menus.selectedTabIcon)),
               )
               .toList(),
           onTap: (newIndex) => setState(
             () {
-              if (_currentBarIndex != newIndex) {
-                _currentBarIndex = newIndex;
+              if (_currentTabIndex != newIndex) {
+                _currentTabIndex = newIndex;
               } else {
                 // If the user is re-selecting the tab, the common
                 // behavior is to empty the stack.
-                currentFlow.navigatorKey.currentState
+                currentTab.navigatorKey.currentState
                     .popUntil((route) => route.isFirst);
               }
             },
@@ -105,12 +106,12 @@ class _HomeScreenState extends State<HomeScreen> {
   // The best practice here would be to extract this to another Widget,
   // however, moving it to a separate class would only harm the
   // readability of our guide.
-  Widget _buildIndexedPageFlow(AppFlow appFlow) => Navigator(
+  Widget _buildIndexedPageTab(MainTabs mainTabs) => Navigator(
         // The key enables us to access the Navigator's state inside the
         // onWillPop callback and for emptying its stack when a tab is
         // re-selected. That is why a GlobalKey is needed instead of
         // a simpler ValueKey.
-        key: appFlow.navigatorKey,
+        key: mainTabs.navigatorKey,
         // Since this isn't the purpose of this sample, we're not using named
         // routes. Because of that, the onGenerateRoute callback will be
         // called only for the initial route.
@@ -118,8 +119,8 @@ class _HomeScreenState extends State<HomeScreen> {
           settings: settings,
           builder: (context) => IndexedPage(
             index: 1,
-            containingFlowTitle: appFlow.title,
-            backgroundColor: appFlow.mainColor,
+            containingFlowTitle: mainTabs.title,
+            backgroundColor: mainTabs.mainColor,
           ),
         ),
       );
