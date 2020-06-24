@@ -1,6 +1,10 @@
 import 'package:adaptive_bottom_nav_sample/main_tabs.dart';
 import 'package:adaptive_bottom_nav_sample/indexed_page.dart';
-import 'package:adaptive_bottom_nav_sample/pages.dart';
+import 'package:adaptive_bottom_nav_sample/pages/arena.dart';
+import 'package:adaptive_bottom_nav_sample/pages/home.dart';
+import 'package:adaptive_bottom_nav_sample/pages/play.dart';
+import 'package:adaptive_bottom_nav_sample/pages/profile.dart';
+import 'package:adaptive_bottom_nav_sample/pages/store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -21,37 +25,40 @@ class _HomeScreenState extends State<HomeScreen> {
       title: 'Xports',
       tabIcon: Icons.ondemand_video,
       selectedTabIcon: Icons.home,
-      mainColor: Colors.red,
       navigatorKey: GlobalKey<NavigatorState>(),
     ),
     MainTabs(
       title: 'Play',
       tabIcon: Icons.games,
       selectedTabIcon: Icons.play_circle_filled,
-      mainColor: Colors.purple,
       navigatorKey: GlobalKey<NavigatorState>(),
     ),
     MainTabs(
       title: 'Arena',
       tabIcon: Icons.music_note,
       selectedTabIcon: Icons.business,
-      mainColor: Colors.green,
       navigatorKey: GlobalKey<NavigatorState>(),
     ),
     MainTabs(
       title: 'Profile',
       tabIcon: Icons.satellite,
       selectedTabIcon: Icons.person,
-      mainColor: Colors.yellow,
       navigatorKey: GlobalKey<NavigatorState>(),
     ),
     MainTabs(
       title: 'Store',
       tabIcon: Icons.fastfood,
       selectedTabIcon: Icons.store,
-      mainColor: Colors.blue,
       navigatorKey: GlobalKey<NavigatorState>(),
     ),
+  ];
+
+  final List<Widget> _tabPages = [
+    HomePage(),
+    PlayPage(),
+    ArenaPage(),
+    ProfilePage(),
+    StorePage(),
   ];
 
   @override
@@ -68,12 +75,15 @@ class _HomeScreenState extends State<HomeScreen> {
           !await currentTab.navigatorKey.currentState.maybePop(),
       child: Scaffold(
         body: IndexedStack(
+          // a page for every tab
           index: _currentTabIndex,
           children: mainTabs
               .map(
                 _buildIndexedPageTab,
               )
               .toList(),
+
+          // children: _tabPages,
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
@@ -117,11 +127,11 @@ class _HomeScreenState extends State<HomeScreen> {
         // called only for the initial route.
         onGenerateRoute: (settings) => MaterialPageRoute(
           settings: settings,
-          builder: (context) => IndexedPage(
-            index: 1,
-            containingFlowTitle: mainTabs.title,
-            backgroundColor: mainTabs.mainColor,
-          ),
+          builder: (context) => _tabPages[_currentTabIndex],
+          // IndexedPage(
+          //   index: 1,
+          //   tabPagesTitle: mainTabs.title,
+          // ),
         ),
       );
 }

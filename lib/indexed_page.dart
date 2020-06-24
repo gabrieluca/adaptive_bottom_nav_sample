@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -10,23 +8,21 @@ import 'package:flutter/widgets.dart';
 /// a random background color.
 class IndexedPage extends StatelessWidget {
   const IndexedPage({
-    @required this.index,
-    @required this.backgroundColor,
-    @required this.containingFlowTitle,
+    this.index,
+    this.backgroundColor,
+    this.tabPagesTitle,
     Key key,
-  })  : assert(index != null),
-        assert(backgroundColor != null),
-        super(key: key);
+  }) : super(key: key);
 
   final int index;
   final Color backgroundColor;
-  final String containingFlowTitle;
+  final String tabPagesTitle;
 
   @override
   Widget build(BuildContext context) {
     var pageTitle = 'Page $index';
-    if (containingFlowTitle != null) {
-      pageTitle += ' of $containingFlowTitle';
+    if (tabPagesTitle != null) {
+      pageTitle += ' of $tabPagesTitle';
     }
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -74,21 +70,11 @@ class IndexedPage extends StatelessWidget {
       rootNavigator: !isHorizontalNavigation,
     ).push(
       MaterialPageRoute(
-        builder: (context) => IndexedPage(
-          // If it's a new flow, the displayed index should be 1 again.
-          index: isHorizontalNavigation ? index + 1 : 1,
-          // If it's a new flow, we'll randomize its color.
-          backgroundColor: isHorizontalNavigation
-              ? backgroundColor
-              : Colors.primaries[Random().nextInt(Colors.primaries.length)],
-          // If it's stating a new flow let's just call it 'New.'
-          containingFlowTitle:
-              isHorizontalNavigation ? containingFlowTitle : 'New',
-        ),
-        // Flutter will use the fullscreenDialog property to change the
-        // animation and the app bar's left icon to an X instead of an arrow.
-        fullscreenDialog: !isHorizontalNavigation,
-      ),
+          builder: (context) => IndexedPage(
+                // If it's a new flow, the displayed index should be 1 again.
+                index: isHorizontalNavigation ? index + 1 : 1,
+              ),
+          fullscreenDialog: !isHorizontalNavigation),
     );
   }
 }
